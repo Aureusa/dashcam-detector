@@ -1,0 +1,29 @@
+samples/clip.mp4
+================
+Source page : https://commons.wikimedia.org/wiki/File:Dashcam_Recording_(urban).ogv
+Direct file : https://upload.wikimedia.org/wikipedia/commons/e/ea/Dashcam_Recording_%28urban%29.ogv
+Author      : Fernost (Wikimedia Commons user), "Own work"
+Description : Dashcam test recording (PowerUCC Panorama 2, 140 degrees angle, daylight, urban), 1080p/30
+License     : CC0 1.0 Universal (public domain dedication)
+              http://creativecommons.org/publicdomain/zero/1.0/deed.en
+Processing  : trimmed to 00:32-01:22 (50 s), scaled 1920x1080 -> 1280x720, 30 fps, audio removed,
+              re-encoded H.264 (libx264 high, crf 27, yuv420p, +faststart):
+              ffmpeg -ss 32 -i urban.ogv -t 50 -an -vf "scale=1280:720:flags=bicubic,fps=30" \
+                     -c:v libx264 -preset slow -crf 27 -pix_fmt yuv420p -profile:v high \
+                     -movflags +faststart samples/clip.mp4
+Content     : urban daytime driving (Germany, 2013): parked/moving cars, a pedestrian at a bus
+              stop, road signs, overhead gantry signs.
+
+samples/live_clip.mp4
+=====================
+30 s recorded from the locally connected camera (/dev/video0, "GENERAL - UVC", MJPG 1280x720) with
+  .venv/bin/python scripts/probe_camera.py --source /dev/video0 --seconds 30 --record samples/live_clip.mp4
+The camera advertises 30 fps but delivers 25.1 fps (40 ms frame interval, confirmed with ffmpeg);
+frames are timestamped on arrival (ffmpeg -use_wallclock_as_timestamps), so the clip plays in real
+time (~25 fps, H.264). Indoor scene (camera not pointed at traffic). Private recording of the
+user's own camera; not for redistribution.
+
+samples/probe_live/frame_00..04.jpg
+===================================
+Frames saved from /dev/video0 by:
+  probe_camera.py --source /dev/video0 --seconds 10 --save-frames 5 --out-dir samples/probe_live

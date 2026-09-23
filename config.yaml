@@ -1,0 +1,47 @@
+# Dashcam RT-DETR pipeline configuration.
+# Every key is optional (defaults live in app/config.py); unknown keys are rejected.
+# CLI overrides: --source --checkpoint --device --host --port --threshold --log-level
+
+camera:
+  source: "/dev/video0"     # int index | /dev/videoN | path/to/file.mp4 | rtsp://... | http://...
+  backend: "auto"           # auto | v4l2 | ffmpeg | gstreamer
+  width: 1280
+  height: 720
+  fps: 25                   # camera advertises 30 but delivers 25 fps (hardware limit, verified with ffmpeg)
+  fourcc: "MJPG"            # MJPG is usually required for 720p/1080p @30fps over USB ("" = don't set)
+  buffer_size: 1
+  loop_file: true           # loop when source is a video file
+  pace_file: true           # play files at native FPS (simulates a live camera)
+  reconnect_delay_s: 2.0
+  max_consecutive_failures: 30
+  first_frame_timeout_s: 10.0
+
+model:
+  checkpoint: "PekingU/rtdetr_v2_r50vd"   # 53.4 COCO AP, ~19 ms/frame (p95 ~20) on RTX 5060 Ti fp16.
+                                          # Faster: rtdetr_v2_r18vd (48.1 AP, ~10 ms) / r34vd (49.9 AP, ~12 ms).
+                                          # Most accurate: rtdetr_v2_r101vd (54.3 AP, ~26 ms; ~15 ms with compile: true).
+  device: "auto"            # auto | cuda | cuda:0 | cpu
+  fp16: true                # ignored on CPU
+  input_size: 640           # RT-DETR default; keep 640
+  score_threshold: 0.5
+  classes: ["person", "bicycle", "car", "motorcycle", "bus", "truck",
+            "traffic light", "stop sign"]   # [] = all classes
+  compile: false            # torch.compile (experimental)
+  warmup_iters: 10
+
+render:
+  line_thickness: 2
+  font_scale: 0.5
+  draw_hud: true
+  output_width: 0           # 0 = keep capture width; e.g. 960 to shrink stream bandwidth
+
+server:
+  # WARNING: 0.0.0.0 exposes the camera feed (unauthenticated) to every device on the LAN.
+  # Use "127.0.0.1" to restrict viewing to this machine.
+  host: "0.0.0.0"
+  port: 8000
+  jpeg_quality: 80
+  max_stream_fps: 30
+
+logging:
+  level: "INFO"             # DEBUG | INFO | WARNING | ERROR | CRITICAL

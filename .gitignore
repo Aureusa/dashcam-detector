@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+logs/
+samples/*.mp4
+samples/frame_*.jpg
+samples/*_det.jpg
+samples/probe_*/
+PLAN.md

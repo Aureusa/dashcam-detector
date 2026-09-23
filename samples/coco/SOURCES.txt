@@ -1,0 +1,13 @@
+COCO val2017 images (http://images.cocodataset.org/val2017/<id>.jpg).
+License: COCO images are under their respective Flickr Creative Commons licenses (see
+https://cocodataset.org/#termsofuse); annotations CC BY 4.0. Used here for testing only.
+
+000000039769.jpg  two cats on a sofa with remotes (model-card image; detector smoke test)
+000000005037.jpg  street: bus, cars, people
+000000007088.jpg  street: cars, truck, person, umbrella
+000000007386.jpg  motorbike, truck, dog
+000000008211.jpg  people on motorbikes
+000000015440.jpg  stop sign, cars
+000000001000.jpg  group of people
+000000001353.jpg  people, suitcase
+000000014439.jpg  crowd of people on a beach
