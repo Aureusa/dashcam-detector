@@ -9,7 +9,7 @@ capture thread ──(latest-frame slot)──▶ inference thread ──(latest
  OpenCV V4L2/FFmpeg                      GPU preprocess → RT-DETR fp16 → draw → JPEG (once)
 ```
 
-The buffers are single-slot "latest value wins" slots, not queues. If inference falls behind, frames are dropped and latency stays bounded. The design follows an internal implementation plan; section references like "PLAN §12" in code comments refer to it.
+The buffers are single-slot "latest value wins" slots, not queues. If inference falls behind, frames are dropped and latency stays bounded. For how the modules fit together, see [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## Development setup
 
